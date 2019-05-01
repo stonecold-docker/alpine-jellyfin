@@ -1,0 +1,29 @@
+#!/bin/sh
+
+set -e
+
+mkdir -p /opt/jellyfin
+
+mkdir -p /build
+
+cd /build
+
+#Jellyfin
+JELLYFIN_VERSION="$(wget https://github.com/jellyfin/jellyfin/releases.atom -q -O - | grep -A 1 -e 'link.*alternate' | grep -v '\-rc' | grep -e '    <' | sed 'N;s/\n/ /' | head -1 | sed 's%.*/tag/\([^"]*\).*%\1%')"
+JELLYFIN_WEB_VERSION="$(wget https://github.com/jellyfin/jellyfin-web/releases.atom -q -O - | grep -A 1 -e 'link.*alternate' | grep -v '\-rc' | grep -e '    <' | sed 'N;s/\n/ /' | head -1 | sed 's%.*/tag/\([^"]*\).*%\1%')"
+#JELLYFIN_VERSION=master
+#JELLYFIN_WEB_VERSION=master
+echo "Jellyfin Version : ${JELLYFIN_VERSION}"
+echo "Jellyfin-Web Version : ${JELLYFIN_WEB_VERSION}"
+
+wget https://github.com/jellyfin/jellyfin/archive/${JELLYFIN_VERSION}.tar.gz -q -O - | tar zxf -
+cd jellyfin-*
+dotnet publish Jellyfin.Server --configuration Release --output=/opt/jellyfin --self-contained --runtime linux-musl-x64 "-p:GenerateDocumentationFile=false;DebugSymbols=false;DebugType=none"
+
+wget https://github.com/jellyfin/jellyfin-web/archive/${JELLYFIN_WEB_VERSION}.tar.gz -q -O - | tar zxf - -C /opt/jellyfin
+mv /opt/jellyfin/jellyfin-web-* /opt/jellyfin/jellyfin-web
+ 
+cd /
+
+rm -rf /build
+

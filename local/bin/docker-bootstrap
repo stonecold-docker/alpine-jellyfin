@@ -1,0 +1,23 @@
+#!/bin/sh
+
+set -e
+
+if [ -e /.init ]; then
+	exit
+fi
+
+touch /.init
+
+mkdir -p /conf.d/jellyfin /cache /transcode /data
+
+RUN_USER_NAME=${RUN_USER_NAME:-root}
+RUN_USER_UID=${RUN_USER_UID:-0}
+RUN_USER_GID=${RUN_USER_GID:-0}
+RUN_USER_GID_LIST=${RUN_USER_GID_LIST:-audio,video}
+
+docker-adduser -u ${RUN_USER_UID} -g ${RUN_USER_GID} -G ${RUN_USER_GID_LIST} -H /dev/null -S /sbin/nologin -R ${RUN_USER_NAME}
+
+docker-chown ${RUN_USER_NAME} /conf.d
+docker-chown ${RUN_USER_NAME} /cache
+docker-chown ${RUN_USER_NAME} /transcode
+

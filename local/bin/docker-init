@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+PKGS_LIB_JELLYFIN="libcurl"
+
+PKGS_LIB_FFMPEG="gnutls lame libass libgomp libtheora libva libva-intel-driver libvorbis libvpx openjpeg opus x264-libs x265-libs xvidcore "
+
+docker-install -r -u -c ${PKGS_LIB_JELLYFIN} ${PKGS_LIB_FFMPEG}
+
+mkdir -p /conf.d/jellyfin /cache /transcode /data
+
