@@ -1,5 +1,3 @@
-ARG DOCKER_ARCH="x64"
-
 FROM forumi0721alpinex64/alpine-x64-dotnet-sdk:latest as builder
 
 LABEL maintainer="forumi0721@gmail.com"
@@ -14,15 +12,15 @@ RUN ["docker-build"]
 
 
 
-FROM forumi0721alpine${DOCKER_ARCH}build/alpine-${DOCKER_ARCH}-ffmpeg-build:latest as ffmpeg
+FROM forumi0721alpinex64build/alpine-x64-ffmpeg-build:latest as ffmpeg
 
 
 
-FROM forumi0721alpine${DOCKER_ARCH}build/alpine-${DOCKER_ARCH}-skiasharp-build:latest as skiasharp
+FROM forumi0721alpinex64build/alpine-x64-skiasharp-build:latest as skiasharp
 
 
 
-FROM forumi0721alpine${DOCKER_ARCH}/alpine-${DOCKER_ARCH}-dotnet-runtime:latest
+FROM forumi0721alpinex64/alpine-x64-dotnet-runtime:latest
 
 LABEL maintainer="forumi0721@gmail.com"
 
