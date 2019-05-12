@@ -9,10 +9,7 @@ case "$(uname -m)" in
 		PKGS_LIB_FFMPEG="gnutls lame libass libgomp libtheora libva libva-intel-driver libvorbis libvpx openjpeg opus x264-libs x265-libs xvidcore "
 		docker-install -r -u -c su-exec ${PKGS_LIB_JELLYFIN} ${PKGS_LIB_FFMPEG}
 		;;
-	aarch64)
-		docker-install -r -u -c su-exec ${PKGS_LIB_JELLYFIN} ffmpeg
-		;;
-	armv7l)
+	*)
 		docker-install -r -u -c su-exec ${PKGS_LIB_JELLYFIN} ffmpeg
 		;;
 esac
@@ -22,6 +19,20 @@ export DOTNET_RUNNING_IN_CONTAINER=true
 export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true
 EOF
 chmod 755 /etc/profile.d/dotnet.sh
+
+mkdir -p /usr/local/bin /usr/local/lib /usr/local/share
+for x in /opt/ffmpeg/bin/*
+do
+	ln -s ${x} /usr/local/bin/
+done
+for x in /opt/ffmpeg/lib/*
+do
+	ln -s ${x} /usr/local/lib/
+done
+for x in /opt/ffmpeg/share/*
+do
+	ln -s ${x} /usr/local/share/
+done
 
 mkdir -p /conf.d/jellyfin /cache /transcode /data
 

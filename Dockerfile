@@ -1,4 +1,10 @@
-FROM forumi0721alpinex64/alpine-x64-dotnet-sdk:latest as builder
+ARG BUILD_ARCH=x64
+
+FROM forumi0721alpine${BUILD_ARCH}build/alpine-${BUILD_ARCH}-skiasharp-build:latest as skiasharp
+
+FROM forumi0721alpine${BUILD_ARCH}build/alpine-${BUILD_ARCH}-ffmpeg-build:latest as ffmpeg
+
+FROM forumi0721alpine${BUILD_ARCH}/alpine-${BUILD_ARCH}-dotnet-sdk:latest as builder
 
 LABEL maintainer="forumi0721@gmail.com"
 
@@ -12,15 +18,9 @@ RUN ["docker-build"]
 
 #RUN ["docker-build-end"]
 
-
-
-FROM forumi0721alpinex64build/alpine-x64-skiasharp-build:latest as skiasharp
-
 COPY --from=skiasharp /opt/skia/libSkiaSharp.so /opt/jellyfin/
 
-
-
-FROM forumi0721alpinex64build/alpine-x64-ffmpeg-build:latest as ffmpeg
+COPY --from=ffmpeg /opt/ffmpeg /opt/ffmpeg
 
 
 
@@ -28,10 +28,9 @@ FROM forumi0721/alpine-x64-base:latest
 
 LABEL maintainer="forumi0721@gmail.com"
 
-COPY local/. /usr/local/
+COPY --from=builder /opt /opt
 
-COPY --from=builder /opt/jellyfin /opt/jellyfin
-COPY --from=ffmpeg /opt/ffmpeg /usr/local/
+COPY local/. /usr/local/
 
 #RUN ["docker-build-start"]
 
