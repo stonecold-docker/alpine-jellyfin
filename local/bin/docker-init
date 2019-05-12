@@ -2,7 +2,7 @@
 
 set -e
 
-PKGS_LIB_JELLYFIN="ca-certificates libgcc libstdc++ icu-libs krb5-libs libintl userspace-rcu lttng-ust tzdata"
+PKGS_LIB_JELLYFIN="ca-certificates libgcc libstdc++ icu-libs krb5-libs libintl userspace-rcu lttng-ust tzdata libcurl"
 
 case "$(uname -m)" in
 	x86_64)
