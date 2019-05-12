@@ -2,11 +2,26 @@
 
 set -e
 
-PKGS_LIB_JELLYFIN="libcurl"
+PKGS_LIB_JELLYFIN="ca-certificates libgcc libstdc++ icu-libs krb5-libs libintl userspace-rcu lttng-ust tzdata"
 
-PKGS_LIB_FFMPEG="gnutls lame libass libgomp libtheora libva libva-intel-driver libvorbis libvpx openjpeg opus x264-libs x265-libs xvidcore "
+case "$(uname -m)" in
+	x86_64)
+		PKGS_LIB_FFMPEG="gnutls lame libass libgomp libtheora libva libva-intel-driver libvorbis libvpx openjpeg opus x264-libs x265-libs xvidcore "
+		docker-install -r -u -c su-exec ${PKGS_LIB_JELLYFIN} ${PKGS_LIB_FFMPEG}
+		;;
+	aarch64)
+		docker-install -r -u -c su-exec ${PKGS_LIB_JELLYFIN} ffmpeg
+		;;
+	armv7l)
+		docker-install -r -u -c su-exec ${PKGS_LIB_JELLYFIN} ffmpeg
+		;;
+esac
 
-docker-install -r -u -c su-exec ${PKGS_LIB_JELLYFIN} ${PKGS_LIB_FFMPEG}
+cat << EOF > /etc/profile.d/dotnet.sh
+export DOTNET_RUNNING_IN_CONTAINER=true
+export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true
+EOF
+chmod 755 /etc/profile.d/dotnet.sh
 
 mkdir -p /conf.d/jellyfin /cache /transcode /data
 
