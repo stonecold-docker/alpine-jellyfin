@@ -19,12 +19,18 @@ echo "Jellyfin-Web Version : ${JELLYFIN_WEB_VERSION}"
 wget https://github.com/jellyfin/jellyfin/archive/${JELLYFIN_VERSION}.tar.gz -q -O - | tar zxf -
 cd jellyfin-*
 dotnet publish Jellyfin.Server --configuration Release --output=/opt/jellyfin --self-contained --runtime ${DOTNET_RUNTIME} "-p:GenerateDocumentationFile=false;DebugSymbols=false;DebugType=none"
-
 wget https://github.com/jellyfin/jellyfin-web/archive/${JELLYFIN_WEB_VERSION}.tar.gz -q -O - | tar zxf - -C /opt/jellyfin
 mv /opt/jellyfin/jellyfin-web-* /opt/jellyfin/jellyfin-web
 
 chmod 755 /opt/jellyfin/jellyfin
  
+#Alpine Linux need to add libSkiaSharp.so
+mkdir -p /build/skia
+cd /build/skia
+wget https://www.nuget.org/api/v2/package/Goelze.SkiaSharp.NativeAssets.AlpineLinux -q -O Goelze.SkiaSharp.NativeAssets.AlpineLinux.nuget
+unzip -q Goelze.SkiaSharp.NativeAssets.AlpineLinux.nuget
+cp runtimes/linux-x64/native/libSkiaSharp.so /opt/jellyfin/
+
 cd /
 
 rm -rf /build
