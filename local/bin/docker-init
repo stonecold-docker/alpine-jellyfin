@@ -16,7 +16,7 @@ esac
 
 cat << EOF > /etc/profile.d/dotnet.sh
 export DOTNET_RUNNING_IN_CONTAINER=true
-export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true
+export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 EOF
 chmod 755 /etc/profile.d/dotnet.sh
 
