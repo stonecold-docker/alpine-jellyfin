@@ -6,8 +6,9 @@ PKGS_LIB_JELLYFIN="ca-certificates libgcc libstdc++ icu-libs krb5-libs libintl u
 
 case "$(uname -m)" in
 	x86_64)
-		PKGS_LIB_FFMPEG="gnutls lame libass libgomp libtheora libva libva-intel-driver libvorbis libvpx openjpeg opus x264-libs x265-libs xvidcore "
-		docker-install -r -u -c su-exec ${PKGS_LIB_JELLYFIN} ${PKGS_LIB_FFMPEG}
+		#PKGS_LIB_FFMPEG="gnutls lame libass libgomp libtheora libva libva-intel-driver libvorbis libvpx openjpeg opus x264-libs x265-libs xvidcore "
+		#docker-install -r -u -c su-exec ${PKGS_LIB_JELLYFIN} ${PKGS_LIB_FFMPEG}
+		docker-install -r -u -c su-exec ${PKGS_LIB_JELLYFIN} ffmpeg libva-intel-driver
 		;;
 	*)
 		docker-install -r -u -c su-exec ${PKGS_LIB_JELLYFIN} ffmpeg
@@ -20,19 +21,19 @@ export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 EOF
 chmod 755 /etc/profile.d/dotnet.sh
 
-mkdir -p /usr/local/bin /usr/local/lib /usr/local/share
-for x in /opt/ffmpeg/bin/*
-do
-	ln -s ${x} /usr/local/bin/
-done
-for x in /opt/ffmpeg/lib/*
-do
-	ln -s ${x} /usr/local/lib/
-done
-for x in /opt/ffmpeg/share/*
-do
-	ln -s ${x} /usr/local/share/
-done
+#mkdir -p /usr/local/bin /usr/local/lib /usr/local/share
+#for x in /opt/ffmpeg/bin/*
+#do
+#	ln -s ${x} /usr/local/bin/
+#done
+#for x in /opt/ffmpeg/lib/*
+#do
+#	ln -s ${x} /usr/local/lib/
+#done
+#for x in /opt/ffmpeg/share/*
+#do
+#	ln -s ${x} /usr/local/share/
+#done
 
 mkdir -p /conf.d/jellyfin /cache /transcode /data
 
