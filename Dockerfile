@@ -4,7 +4,7 @@ FROM forumi0721alpine${BUILD_ARCH}build/alpine-${BUILD_ARCH}-ffmpeg-build:latest
 
 #FROM forumi0721alpine${BUILD_ARCH}build/alpine-${BUILD_ARCH}-skiasharp-build:latest as skiasharp
 
-FROM forumi0721alpine${BUILD_ARCH}/alpine-${BUILD_ARCH}-dotnet-2-sdk:latest as builder
+FROM forumi0721alpine${BUILD_ARCH}/alpine-${BUILD_ARCH}-dotnet-3-sdk:latest as builder
 
 LABEL maintainer="forumi0721@gmail.com"
 

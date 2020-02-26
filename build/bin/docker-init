@@ -2,6 +2,8 @@
 
 set -e
 
+docker-install -r -u yarn
+
 mkdir -p /opt/jellyfin
 
 mkdir -p /build
@@ -21,7 +23,10 @@ cd jellyfin-*
 sed -i -e 's/"SkiaSharp.NativeAssets.Linux"/"Goelze.SkiaSharp.NativeAssets.AlpineLinux"/g' Jellyfin.Drawing.Skia/Jellyfin.Drawing.Skia.csproj #Patch for alpine linux
 dotnet publish Jellyfin.Server --configuration Release --output=/opt/jellyfin --self-contained --runtime ${DOTNET_RUNTIME} "-p:GenerateDocumentationFile=false;DebugSymbols=false;DebugType=none"
 wget https://github.com/jellyfin/jellyfin-web/archive/${JELLYFIN_WEB_VERSION}.tar.gz -q -O - | tar zxf - -C /opt/jellyfin
-mv /opt/jellyfin/jellyfin-web-* /opt/jellyfin/jellyfin-web
+cd /opt/jellyfin/jellyfin-web-*
+yarn install
+mv /opt/jellyfin/jellyfin-web-*/dist /opt/jellyfin/jellyfin-web
+rm -rf /opt/jellyfin/jellyfin-web-*
 
 chmod 755 /opt/jellyfin/jellyfin
  
@@ -35,4 +40,6 @@ chmod 755 /opt/jellyfin/jellyfin
 cd /
 
 rm -rf /build
+
+docker-install -d -c yarn
 
