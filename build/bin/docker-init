@@ -24,9 +24,14 @@ sed -i -e 's/"SkiaSharp.NativeAssets.Linux"/"Goelze.SkiaSharp.NativeAssets.Alpin
 dotnet publish Jellyfin.Server --configuration Release --output=/opt/jellyfin --self-contained --runtime ${DOTNET_RUNTIME} "-p:GenerateDocumentationFile=false;DebugSymbols=false;DebugType=none"
 wget https://github.com/jellyfin/jellyfin-web/archive/${JELLYFIN_WEB_VERSION}.tar.gz -q -O - | tar zxf - -C /opt/jellyfin
 cd /opt/jellyfin/jellyfin-web-*
+patch -p1 < /usr/local/etc/playbackspeed-src-10.4.z.patch
 yarn install
-mv /opt/jellyfin/jellyfin-web-*/dist /opt/jellyfin/jellyfin-web
+mv dist /opt/jellyfin/jellyfin-web
+cd /opt/jellyfin
 rm -rf /opt/jellyfin/jellyfin-web-*
+
+#cd /opt/jellyfin/jellyfin-web
+#patch -p1 < /usr/local/etc/playbackspeed-10.4.z.patch
 
 chmod 755 /opt/jellyfin/jellyfin
  

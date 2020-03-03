@@ -1,0 +1,55 @@
+diff --git a/src/controllers/videoosd.js b/src/controllers/videoosd.js
+index 8a6d1ffdf..46953c93f 100644
+--- a/src/controllers/videoosd.js
++++ b/src/controllers/videoosd.js
+@@ -1070,6 +1070,15 @@ define(["playbackManager", "dom", "inputmanager", "datetime", "itemHelper", "med
+             }
+         }
+ 
++        function setPlaybackSpeed() {
++            if (document.querySelector('video').playbackRate >= 2) {
++                document.querySelector('video').playbackRate = 0.5;
++            } else {
++                document.querySelector('video').playbackRate = document.querySelector('video').playbackRate + 0.25;
++            }
++            view.querySelector(".btnSetPlaybackSpeed").textContent = document.querySelector('video').playbackRate + "x";
++        }
++
+         function onWindowKeyDown(e) {
+             if (!currentVisibleMenu && 32 === e.keyCode) {
+                 playbackManager.playPause(currentPlayer);
+@@ -1444,6 +1453,7 @@ define(["playbackManager", "dom", "inputmanager", "datetime", "itemHelper", "med
+         });
+         view.querySelector(".btnAudio").addEventListener("click", showAudioTrackSelection);
+         view.querySelector(".btnSubtitles").addEventListener("click", showSubtitleTrackSelection);
++        view.querySelector(".btnSetPlaybackSpeed").addEventListener("click", setPlaybackSpeed);
+ 
+         if (browser.touch) {
+             (function () {
+diff --git a/src/videoosd.html b/src/videoosd.html
+index 0f4be7591..2bfb567e5 100644
+--- a/src/videoosd.html
++++ b/src/videoosd.html
+@@ -73,6 +73,8 @@
+                     <i class="xlargePaperIconButton md-icon">&#xE911;</i>
+                 </button>
+ 
++                <button is="paper-icon-button-light" class="btnSetPlaybackSpeed">1x</button>
++
+                 <div class="osdTimeText"><span class="osdPositionText"></span><span class="osdDurationText"></span><span class="endsAtText"></span></div>
+ 
+                 <div class="volumeButtons hide-mouse-idle-tv">
+diff --git a/src/nowplaying.html b/src/nowplaying.html
+index fa8ade166..073306ac7 100644
+--- a/src/nowplaying.html
++++ b/src/nowplaying.html
+@@ -46,6 +46,9 @@
+                         <i class="md-icon">closed_caption</i>
+                     </button>
+ 
++
++                    <button is="paper-icon-button-light" class="btnSetPlaybackSpeed">1x</button>
++
+                     <div class="nowPlayingTime">
+                         <div class="positionTime"></div>
+                         <div style="margin: 0 .25em;">/</div>
