@@ -1,12 +1,12 @@
 ARG BUILD_ARCH=x64
 
-FROM forumi0721alpine${BUILD_ARCH}build/alpine-${BUILD_ARCH}-jellyfin-builddep:latest as builddep
+FROM forumi0721alpine${BUILD_ARCH}build/alpine-${BUILD_ARCH}-jellyfin-builder:latest as builder
 
 FROM forumi0721/alpine-x64-base:latest
 
 LABEL maintainer="forumi0721@gmail.com"
 
-COPY --from=builddep /app /app
+COPY --from=builder /app /app
 
 COPY local/. /usr/local/
 
