@@ -73,4 +73,6 @@ docker run -d \
 
 ----------------------------------------
 * [forumi0721alpinex64/alpine-x64-jellyfin](https://hub.docker.com/r/forumi0721alpinex64/alpine-x64-jellyfin/)
+----------------------------------------
+* [forumi0721alpinex64build/alpine-x64-jellyfin-builddep](https://hub.docker.com/r/forumi0721alpinex64build/alpine-x64-jellyfin-builddep/)
 

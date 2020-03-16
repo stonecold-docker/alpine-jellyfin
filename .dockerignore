@@ -4,3 +4,7 @@ README.md
 .dockerignore
 .git
 .gitignore
+builddep
+builddep-ffmpeg
+builddep-gn
+builddep-skiasharp

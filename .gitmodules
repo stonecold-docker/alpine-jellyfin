@@ -1,0 +1,9 @@
+[submodule "builddep-gn"]
+	path = builddep-gn
+	url = git@bitbucket.org:docker_alpine/alpine-jellyfin-builddep-gn.git
+[submodule "builddep-skiasharp"]
+	path = builddep-skiasharp
+	url = git@bitbucket.org:docker_alpine/alpine-jellyfin-builddep-skiasharp.git
+[submodule "builddep-ffmpeg"]
+	path = builddep-ffmpeg
+	url = git@bitbucket.org:docker_alpine/alpine-jellyfin-builddep-ffmpeg.git

@@ -2,37 +2,49 @@
 
 set -e
 
-PKGS_LIB_JELLYFIN="ca-certificates libgcc libstdc++ icu-libs krb5-libs libintl userspace-rcu lttng-ust tzdata libcurl"
-
+echo "==> Installing required packages"
+PKG_LIB="ca-certificates libgcc libstdc++ icu-libs krb5-libs libintl userspace-rcu lttng-ust tzdata libcurl"
 case "$(uname -m)" in
 	x86_64)
-		PKGS_LIB_FFMPEG="gnutls lame libass libgomp libtheora libva libva-intel-driver libvorbis libvpx openjpeg opus x264-libs x265-libs xvidcore "
-		docker-install -r -u -c su-exec ${PKGS_LIB_JELLYFIN} ${PKGS_LIB_FFMPEG}
+		PKG_LIB="${PKG_LIB} gnutls lame libass libgomp libtheora libva libva-intel-driver libvorbis libvpx openjpeg opus x264-libs x265-libs xvidcore "
 		;;
 	*)
-		docker-install -r -u -c su-exec ${PKGS_LIB_JELLYFIN} ffmpeg
+		PKG_LIB="${PKG_LIB} ffmpeg"
 		;;
 esac
+docker-install -r -u su-exec ${PKG_LIB}
+echo "==> OK"
+echo
 
+echo "==> Installing ffmpeg"
+mkdir -p /usr/local/bin /usr/local/lib /usr/local/share
+for x in /app/ffmpeg/bin/*
+do
+	ln -s ${x} /usr/local/bin/
+done
+for x in /app/ffmpeg/lib/*
+do
+	ln -s ${x} /usr/local/lib/
+done
+for x in /app/ffmpeg/share/*
+do
+	ln -s ${x} /usr/local/share/
+done
+echo "==> OK"
+echo
+
+echo "==> Uninstalling unnecessary packages"
+docker-install -d -c
+echo "==> OK"
+echo
+
+echo "==> Setting basic configurations"
 cat << EOF > /etc/profile.d/dotnet.sh
 export DOTNET_RUNNING_IN_CONTAINER=true
 export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 EOF
 chmod 755 /etc/profile.d/dotnet.sh
-
-mkdir -p /usr/local/bin /usr/local/lib /usr/local/share
-for x in /opt/ffmpeg/bin/*
-do
-	ln -s ${x} /usr/local/bin/
-done
-for x in /opt/ffmpeg/lib/*
-do
-	ln -s ${x} /usr/local/lib/
-done
-for x in /opt/ffmpeg/share/*
-do
-	ln -s ${x} /usr/local/share/
-done
-
 mkdir -p /conf.d/jellyfin /cache /transcode /data
+echo "==> OK"
+echo
 
