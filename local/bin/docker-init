@@ -4,6 +4,7 @@ set -e
 
 echo "==> Installing required packages"
 PKG_LIB="ca-certificates libgcc libstdc++ icu-libs krb5-libs libintl userspace-rcu lttng-ust tzdata libcurl"
+PKG_DEV=""
 case "$(uname -m)" in
 	x86_64)
 		PKG_LIB="${PKG_LIB} gnutls lame libass libgomp libtheora libva libva-intel-driver libvorbis libvpx openjpeg opus x264-libs x265-libs xvidcore "
@@ -12,7 +13,7 @@ case "$(uname -m)" in
 		PKG_LIB="${PKG_LIB} ffmpeg"
 		;;
 esac
-docker-install -r -u su-exec ${PKG_LIB}
+docker-install -r -u su-exec ${PKG_LIB} ${PKG_DEV}
 echo "==> OK"
 echo
 
@@ -34,7 +35,7 @@ echo "==> OK"
 echo
 
 echo "==> Uninstalling unnecessary packages"
-docker-install -d -c
+docker-install -d -c ${PKG_DEV}
 echo "==> OK"
 echo
 
