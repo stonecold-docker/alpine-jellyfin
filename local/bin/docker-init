@@ -2,7 +2,7 @@
 
 set -e
 
-echo "==> Installing required packages"
+echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Installing required packages"
 PKG_LIB="ca-certificates libgcc libstdc++ icu-libs krb5-libs libintl userspace-rcu lttng-ust tzdata libcurl"
 PKG_DEV=""
 case "$(uname -m)" in
@@ -14,10 +14,10 @@ case "$(uname -m)" in
 		;;
 esac
 docker-install -r -u su-exec ${PKG_LIB} ${PKG_DEV}
-echo "==> OK"
+echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
 echo
 
-echo "==> Installing ffmpeg"
+echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Installing ffmpeg"
 mkdir -p /usr/local/bin /usr/local/lib /usr/local/share
 for x in /app/ffmpeg/bin/*
 do
@@ -31,21 +31,21 @@ for x in /app/ffmpeg/share/*
 do
 	ln -s ${x} /usr/local/share/
 done
-echo "==> OK"
+echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
 echo
 
-echo "==> Uninstalling unnecessary packages"
+echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Uninstalling unnecessary packages"
 docker-install -d -c ${PKG_DEV}
-echo "==> OK"
+echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
 echo
 
-echo "==> Setting basic configurations"
+echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Setting basic configurations"
 cat << EOF > /etc/profile.d/dotnet.sh
 export DOTNET_RUNNING_IN_CONTAINER=true
 export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 EOF
 chmod 755 /etc/profile.d/dotnet.sh
 mkdir -p /conf.d/jellyfin /cache /transcode /data
-echo "==> OK"
+echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
 echo
 
