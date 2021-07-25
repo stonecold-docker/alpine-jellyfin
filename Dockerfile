@@ -1,8 +1,20 @@
-ARG BUILD_ARCH=x64
+ARG BUILD_TAG=latest
 
-FROM forumi0721alpinex64build/alpine-x64-jellyfin-builder:latest as builder
+FROM forumi0721/alpine-dotnet-sdk:latest as builder
 
-FROM forumi0721/alpine-${BUILD_ARCH}-base:latest
+LABEL maintainer="forumi0721@gmail.com"
+
+COPY local/. /usr/local/
+
+#RUN ["docker-build-start"]
+
+RUN ["docker-build"]
+
+#RUN ["docker-build-end"]
+
+
+
+FROM forumi0721/alpine-base:${BUILD_TAG}
 
 LABEL maintainer="forumi0721@gmail.com"
 

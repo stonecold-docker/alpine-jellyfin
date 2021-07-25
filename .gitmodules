@@ -1,12 +1,3 @@
-[submodule "builder"]
-	path = builder
-	url = git@bitbucket.org:docker_alpine/alpine-jellyfin-builder.git
-[submodule "builder-ffmpeg"]
-	path = builder-ffmpeg
-	url = git@bitbucket.org:docker_alpine/alpine-jellyfin-builder-ffmpeg.git
-[submodule "builder-gn"]
-	path = builder-gn
-	url = git@bitbucket.org:docker_alpine/alpine-jellyfin-builder-gn.git
 [submodule "builder-libskiasharp"]
 	path = builder-libskiasharp
 	url = git@bitbucket.org:docker_alpine/alpine-jellyfin-builder-libskiasharp.git

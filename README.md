@@ -1,11 +1,16 @@
 # alpine-jellyfin
+![Docker Pulls](https://img.shields.io/docker/pulls/forumi0721/alpine-jellyfin)
+![Docker Stars](https://img.shields.io/docker/stars/forumi0721/alpine-jellyfin)
 
-#### [alpine-x64-jellyfin](https://hub.docker.com/r/forumi0721alpinex64/alpine-x64-jellyfin/)
-![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/forumi0721alpinex64/alpine-x64-jellyfin/latest)
-![Docker Image Size (tag)](https://img.shields.io/docker/image-size/forumi0721alpinex64/alpine-x64-jellyfin/latest)
-![MicroBadger Layers (tag)](https://img.shields.io/microbadger/layers/forumi0721alpinex64/alpine-x64-jellyfin/latest)
-![Docker Pulls](https://img.shields.io/docker/pulls/forumi0721alpinex64/alpine-x64-jellyfin)
-![Docker Stars](https://img.shields.io/docker/stars/forumi0721alpinex64/alpine-x64-jellyfin)
+
+
+----------------------------------------
+### x64
+![Docker Image Version](https://img.shields.io/docker/v/forumi0721/alpine-jellyfin/latest)
+![Docker Image Size](https://img.shields.io/docker/image-size/forumi0721/alpine-jellyfin/latest)
+### aarch64
+![Docker Image Version](https://img.shields.io/docker/v/forumi0721/alpine-jellyfin/aarch64)
+![Docker Image Size](https://img.shields.io/docker/image-size/forumi0721/alpine-jellyfin/aarch64)
 
 
 
@@ -13,7 +18,7 @@
 #### Description
 
 * Distribution : [Alpine Linux](https://alpinelinux.org/)
-* Architecture : x64
+* Architecture : x64,aarch64
 * Appplication : [Jellyfin](https://jellyfin.github.io/)
     - Jellyfin is a Free Software Media System that puts you in control of managing and streaming your media.
 
@@ -28,7 +33,7 @@ docker run -d \
 		   -p 8920:8920/udp \
 		   -v /comf.d:/conf.d \
 		   -v /data:/data \
-		   forumi0721alpine[ARCH]/alpine-[ARCH]-jellyfin:latest
+		   forumi0721/alpine-jellyfin:[ARCH_TAG]
 ```
 
 
