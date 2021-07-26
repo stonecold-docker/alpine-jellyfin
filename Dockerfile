@@ -4,6 +4,8 @@ FROM forumi0721/alpine-dotnet-sdk:latest as builder
 
 LABEL maintainer="forumi0721@gmail.com"
 
+ENV DOTNET_RUNTIME=linux-musl-x64
+
 COPY local/. /usr/local/
 
 #RUN ["docker-build-start"]
