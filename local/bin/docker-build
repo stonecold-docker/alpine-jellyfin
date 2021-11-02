@@ -105,8 +105,8 @@ if [ -z "${DOTNET_RUNTIME}" ]; then
 			;;
 	esac
 fi
-JELLYFIN_VERSION="$(wget https://github.com/jellyfin/jellyfin/releases.atom -q -O - | grep -A 1 -e 'link.*alternate' | grep -e '    <' | sed 'N;s/\n/ /' | head -1 | sed 's%.*/tag/\([^"]*\).*%\1%')"
-JELLYFIN_WEB_VERSION="$(wget https://github.com/jellyfin/jellyfin-web/releases.atom -q -O - | grep -A 1 -e 'link.*alternate' | grep -e '    <' | sed 'N;s/\n/ /' | head -1 | sed 's%.*/tag/\([^"]*\).*%\1%')"
+JELLYFIN_VERSION="$(wget https://github.com/jellyfin/jellyfin/releases.atom -q -O - | grep -A 1 -e 'link.*alternate' | grep -e '    <' | sed 'N;s/\n/ /' | grep -v alpha | head -1 | sed 's%.*/tag/\([^"]*\).*%\1%')"
+JELLYFIN_WEB_VERSION="$(wget https://github.com/jellyfin/jellyfin-web/releases.atom -q -O - | grep -A 1 -e 'link.*alternate' | grep -e '    <' | sed 'N;s/\n/ /' | grep -v 'alpha' | head -1 | sed 's%.*/tag/\([^"]*\).*%\1%')"
 echo "Dotnet Runtime       : ${DOTNET_RUNTIME}"
 echo "Jellyfin Version     : ${JELLYFIN_VERSION}"
 echo "Jellyfin-Web Version : ${JELLYFIN_WEB_VERSION}"
@@ -117,7 +117,9 @@ echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Installing jellyfin"
 mkdir -p /app/jellyfin
 mkdir -p /build
 cd /build
-wget --no-check-certificate -q -O - https://github.com/jellyfin/jellyfin/archive/${JELLYFIN_VERSION}.tar.gz | tar zxf -
+#wget --no-check-certificate -q -O - https://github.com/jellyfin/jellyfin/archive/${JELLYFIN_VERSION}.tar.gz | tar zxf -
+git clone https://github.com/jellyfin/jellyfin.git -b ${JELLYFIN_VERSION}
+mv jellyfin jellyfin-git
 cd jellyfin-*
 if [ ! -e /app/libskia/libSkiaSharp.so ]; then
 	sed -i -e "s/Include=\"SkiaSharp.NativeAssets.Linux\"/Include=\"StoneCold.SkiaSharp.NativeAssets.AlpineLinux\"/g" Jellyfin.Drawing.Skia/Jellyfin.Drawing.Skia.csproj #Patch for alpine linux
@@ -137,7 +139,9 @@ echo
 #export LD_LIBRARY_PATH='/lib:/usr/lib:/lib/glibc'
 
 cd /app/jellyfin
-wget --no-check-certificate -q -O - https://github.com/jellyfin/jellyfin-web/archive/${JELLYFIN_WEB_VERSION}.tar.gz | tar zxf - -C /app/jellyfin
+#wget --no-check-certificate -q -O - https://github.com/jellyfin/jellyfin-web/archive/${JELLYFIN_WEB_VERSION}.tar.gz | tar zxf - -C /app/jellyfin
+git clone https://github.com/jellyfin/jellyfin-web.git -b ${JELLYFIN_WEB_VERSION}
+mv jellyfin-web jellyfin-web-git
 cd /app/jellyfin/jellyfin-web-*
 echo Y | npx yarn install
 mv dist /app/jellyfin/jellyfin-web
