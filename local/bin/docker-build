@@ -3,167 +3,50 @@
 set -e
 
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Installing required packages"
-PKG_LIB=""
-PKG_DEV="build-base binutils yarn git autoconf automake zlib zlib-dev npm bash"
-docker-install -r -u ${PKG_LIB} ${PKG_DEV}
+PKG_LIB="ca-certificates libgcc libstdc++ icu-libs krb5-libs libintl userspace-rcu lttng-ust tzdata libcurl"
+PKG_DEV=""
+case "$(uname -m)" in
+	x86_64)
+		#PKG_LIB="${PKG_LIB} gnutls lame libass libgomp libtheora libva libva-intel-driver libvorbis libvpx openjpeg opus x264-libs x265-libs xvidcore"
+		PKG_LIB="${PKG_LIB} gnutls libva libva-intel-driver ffmpeg"
+		;;
+	*)
+		PKG_LIB="${PKG_LIB} ffmpeg"
+		;;
+esac
+docker-install -r -u su-exec ${PKG_LIB} ${PKG_DEV}
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
 echo
 
-#echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Installing glibc"
-#rm -rf /build
-##DEBIAN_MIRROR=http://ftp.kr.debian.org/debian
-##DEBIAN_MIRROR=http://ftp.lanet.kr/debian
-#DEBIAN_MIRROR=http://ftp.harukasan.org/debian
-#DEBIAN_ARH=
-#LIB_NAME=
-#LD_NAME=
-#LD_FULL_PATH=
-#case "$(uname -m)" in
-#	x86_64)
-#		DEBIAN_ARCH=amd64
-#		LIB_NAME=x86_64-linux-gnu
-#		LD_NAME=ld-linux-x86-64.so.2
-#		LD_FULL_PATH=/lib64/${LD_NAME}
-#		;;
-#	aarch64)
-#		DEBIAN_ARCH=arm64
-#		LIB_NAME=aarch64-linux-gnu
-#		LD_NAME=ld-linux-aarch64.so.1
-#		LD_FULL_PATH=/lib/${LD_NAME}
-#		;;
-#esac
-#
-#mkdir -p /build
-#cd /build
-#
-#wget --no-check-certificate -q ${DEBIAN_MIRROR}/dists/stable/main/binary-${DEBIAN_ARCH}/Packages.gz
-#
-#for x in libc6:glibc libgcc1:gcc libstdc++6:gcc libc-bin:glibc locales:glibc
+#echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Installing ffmpeg"
+#mkdir -p /usr/local/bin /usr/local/lib /usr/local/share
+#for x in /app/ffmpeg/bin/*
 #do
-#	echo ${x}
-#	x1=$(echo ${x} | cut -d ':' -f 1)
-#	x2=$(echo ${x} | cut -d ':' -f 2)
-#	mkdir -p "${x1}"
-#	cd "${x1}"
-#	wget --no-check-certificate -q "$(zcat ../Packages.gz | grep "Filename: pool/main/g/${x2}.*/${x1}_.*.deb" | sed -e "s@^.*Filename: @${DEBIAN_MIRROR}/\1@g")"
-#	ar -xf *.deb
-#	tar Jxf data.tar.xz || tar zxf data.tar.gz
-#	rm -rf *.deb debian-binary control.* data.*
-#	cd ..
+#	ln -s ${x} /usr/local/bin/
 #done
-#
-#mkdir -p /lib/glibc
-#cp -ar libc6/lib/${LIB_NAME}/* /lib/glibc/
-#cp -ar libgcc1/lib/${LIB_NAME}/* /lib/glibc/
-#cp -ar libstdc++6/usr/lib/${LIB_NAME}/* /lib/glibc/
-#
-#case "$(uname -m)" in
-#	x86_64)
-#		mkdir -p /lib64
-#		ln -sf /lib/glibc/${LD_NAME} /lib64/${LD_NAME}
-#		;;
-#	aarch64)
-#		ln -sf /lib/glibc/${LD_NAME} /lib/${LD_NAME}
-#		;;
-#esac
-#
-#mkdir -p /usr/share/i18n/charmaps /usr/share/i18n/locales /usr/lib/locale
-#cp -ar /build/locales/usr/share/i18n/charmaps/UTF-8.gz /usr/share/i18n/charmaps/
-#cp -ar /build/locales/usr/share/i18n/locales/en_US /usr/share/i18n/locales/
-#cp -ar /build/locales/usr/share/i18n/locales/en_GB /usr/share/i18n/locales/
-#cp -ar /build/locales/usr/share/i18n/locales/i18n /usr/share/i18n/locales/
-#cp -ar /build/locales/usr/share/i18n/locales/i18n_ctype /usr/share/i18n/locales/
-#cp -ar /build/locales/usr/share/i18n/locales/iso14651_t1 /usr/share/i18n/locales/
-#cp -ar /build/locales/usr/share/i18n/locales/iso14651_t1_common /usr/share/i18n/locales/
-#cp -ar /build/locales/usr/share/i18n/locales/translit_neutral /usr/share/i18n/locales/
-#cp -ar /build/locales/usr/share/i18n/locales/translit_combining /usr/share/i18n/locales/
-#cp -ar /build/locales/usr/share/i18n/locales/translit_circle /usr/share/i18n/locales/
-#cp -ar /build/locales/usr/share/i18n/locales/translit_cjk_compat /usr/share/i18n/locales/
-#cp -ar /build/locales/usr/share/i18n/locales/translit_compat /usr/share/i18n/locales/
-#cp -ar /build/locales/usr/share/i18n/locales/translit_font /usr/share/i18n/locales/
-#cp -ar /build/locales/usr/share/i18n/locales/translit_fraction /usr/share/i18n/locales/
-#cp -ar /build/locales/usr/share/i18n/locales/translit_narrow /usr/share/i18n/locales/
-#cp -ar /build/locales/usr/share/i18n/locales/translit_small /usr/share/i18n/locales/
-#cp -ar /build/locales/usr/share/i18n/locales/translit_wide /usr/share/i18n/locales/
-#LD_LIBRARY_PATH=/lib/glibc /build/libc-bin/usr/bin/localedef -c -f UTF-8 -i en_US en_US.UTF-8
-#
-#cd /
-#rm -rf /build
+#for x in /app/ffmpeg/lib/*
+#do
+#	ln -s ${x} /usr/local/lib/
+#done
+#for x in /app/ffmpeg/share/*
+#do
+#	ln -s ${x} /usr/local/share/
+#done
 #echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
 #echo
-
-echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Setting build environment"
-
-DOTNET_RUNTIME=${DOTNET_RUNTIME}
-if [ -z "${DOTNET_RUNTIME}" ]; then
-	case "$(uname -m)" in
-		x86_64)
-			DOTNET_RUNTIME=linux-musl-x64
-			;;
-		aarch64)
-			DOTNET_RUNTIME=linux-musl-arm64
-			;;
-	esac
-fi
-JELLYFIN_VERSION="$(wget https://github.com/jellyfin/jellyfin/releases.atom -q -O - | grep -A 1 -e 'link.*alternate' | grep -e '    <' | sed 'N;s/\n/ /' | grep -v alpha | head -1 | sed 's%.*/tag/\([^"]*\).*%\1%')"
-JELLYFIN_WEB_VERSION="$(wget https://github.com/jellyfin/jellyfin-web/releases.atom -q -O - | grep -A 1 -e 'link.*alternate' | grep -e '    <' | sed 'N;s/\n/ /' | grep -v 'alpha' | head -1 | sed 's%.*/tag/\([^"]*\).*%\1%')"
-echo "Dotnet Runtime       : ${DOTNET_RUNTIME}"
-echo "Jellyfin Version     : ${JELLYFIN_VERSION}"
-echo "Jellyfin-Web Version : ${JELLYFIN_WEB_VERSION}"
-echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
-echo
-
-echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Installing jellyfin"
-mkdir -p /app/jellyfin
-mkdir -p /build
-cd /build
-#wget --no-check-certificate -q -O - https://github.com/jellyfin/jellyfin/archive/${JELLYFIN_VERSION}.tar.gz | tar zxf -
-git clone https://github.com/jellyfin/jellyfin.git -b ${JELLYFIN_VERSION}
-mv jellyfin jellyfin-git
-cd jellyfin-*
-if [ ! -e /app/libskia/libSkiaSharp.so ]; then
-	sed -i -e "s/Include=\"SkiaSharp.NativeAssets.Linux\"/Include=\"StoneCold.SkiaSharp.NativeAssets.AlpineLinux\"/g" Jellyfin.Drawing.Skia/Jellyfin.Drawing.Skia.csproj #Patch for alpine linux
-fi
-dotnet publish Jellyfin.Server --configuration Release --output=/app/jellyfin --self-contained --runtime ${DOTNET_RUNTIME} "-p:GenerateDocumentationFile=false;DebugSymbols=false;DebugType=none"
-if [ -e /app/libskia/libSkiaSharp.so ]; then
-	cp /app/libskia/libSkiaSharp.so /app/jellyfin/
-fi
-cd /
-rm -rf /build
-echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
-echo
-
-#echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Installing Jellyfin-Web"
-#export GLIBC_LD_LINUX_SO='/lib64/ld-linux-x86-64.so.2'
-#export GLIBC_LIBRARY_PATH='/lib/glibc'
-#export LD_LIBRARY_PATH='/lib:/usr/lib:/lib/glibc'
-
-cd /app/jellyfin
-#wget --no-check-certificate -q -O - https://github.com/jellyfin/jellyfin-web/archive/${JELLYFIN_WEB_VERSION}.tar.gz | tar zxf - -C /app/jellyfin
-git clone https://github.com/jellyfin/jellyfin-web.git -b ${JELLYFIN_WEB_VERSION}
-mv jellyfin-web jellyfin-web-git
-cd /app/jellyfin/jellyfin-web-*
-echo Y | npx yarn install
-mv dist /app/jellyfin/jellyfin-web
-cd /app/jellyfin
-rm -rf /app/jellyfin/jellyfin-web-*
-chmod 755 /app/jellyfin/jellyfin
-cd /
-echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
-echo
 
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Uninstalling unnecessary packages"
 docker-install -d -c ${PKG_DEV}
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
 echo
 
-echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Moving output files"
-mkdir -p /output
-mv /app/jellyfin /output/
-#mv /app/ffmpeg /output/
-if [ -z "$(ls -A -- /app)" ]; then
-	rm -rf /app
-fi
+echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Setting basic configurations"
+cat << EOF > /etc/profile.d/dotnet.sh
+export DOTNET_RUNNING_IN_CONTAINER=true
+export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
+EOF
+chmod 755 /etc/profile.d/dotnet.sh
+mkdir -p /conf.d/jellyfin /cache /transcode /data
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
 echo
 

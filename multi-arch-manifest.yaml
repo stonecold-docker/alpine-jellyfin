@@ -1,0 +1,6 @@
+image: forumi0721/alpine-jellyfin:latest
+manifests:
+  - image: forumi0721/alpine-jellyfin:x64
+    platform:
+      architecture: amd64
+      os: linux
