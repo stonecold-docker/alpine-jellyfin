@@ -145,10 +145,14 @@ git clone https://github.com/jellyfin/jellyfin-web.git -b ${JELLYFIN_WEB_VERSION
 mv jellyfin-web jellyfin-web-git
 cd /app/jellyfin/jellyfin-web-*
 #echo Y | npx yarn install
-npm install
-mv dist /app/jellyfin/jellyfin-web
+#npm install
+#mv dist /app/jellyfin/jellyfin-web
+ ./build.sh -t native -p portable
 cd /app/jellyfin
 rm -rf /app/jellyfin/jellyfin-web-*
+tar zxf bin/portable/jellyfin-web_*.tar.gz
+mv jellyfin-web_* jellyfin-web
+rm -rf bin
 chmod 755 /app/jellyfin/jellyfin
 cd /
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> OK"
