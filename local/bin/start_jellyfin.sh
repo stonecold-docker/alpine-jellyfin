@@ -13,5 +13,5 @@ cd /app/jellyfin
 exec su-exec ${RUN_USER_NAME} /app/jellyfin/jellyfin \
 	--datadir /conf.d/jellyfin \
 	--cachedir /cache \
-	--ffmpeg /usr/local/bin/ffmpeg
+	--ffmpeg /usr/bin/ffmpeg
 
