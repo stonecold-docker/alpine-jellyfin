@@ -123,7 +123,6 @@ mv jellyfin jellyfin-git
 cd jellyfin-*
 if [ ! -e /app/libskia/libSkiaSharp.so ]; then
 	sed -i -e "s/Include=\"SkiaSharp.NativeAssets.Linux\"/Include=\"StoneCold.SkiaSharp.NativeAssets.AlpineLinux\"/g" Jellyfin.Drawing.Skia/Jellyfin.Drawing.Skia.csproj #Patch for alpine linux
-	sed -i -e 's/2.88.1-preview\.[0-9]*/2.88.1-preview.75/g' Jellyfin.Drawing.Skia/Jellyfin.Drawing.Skia.csproj
 fi
 #dotnet publish Jellyfin.Server --configuration Release --output=/app/jellyfin --self-contained --runtime ${DOTNET_RUNTIME} "-p:GenerateDocumentationFile=false;DebugSymbols=false;DebugType=none"
 dotnet publish Jellyfin.Server --configuration Release --output=/app/jellyfin --self-contained --runtime ${DOTNET_RUNTIME} "-p:DebugSymbols=false"
