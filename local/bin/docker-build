@@ -8,7 +8,7 @@ PKG_DEV=""
 case "$(uname -m)" in
 	x86_64)
 		#PKG_LIB="${PKG_LIB} gnutls lame libass libgomp libtheora libva libva-intel-driver libvorbis libvpx openjpeg opus x264-libs x265-libs xvidcore"
-		PKG_LIB="${PKG_LIB} gnutls libva libva-intel-driver ffmpeg"
+		PKG_LIB="${PKG_LIB} gnutls libva libva-intel-driver ffmpeg intel-media-driver"
 		;;
 	*)
 		PKG_LIB="${PKG_LIB} ffmpeg"
