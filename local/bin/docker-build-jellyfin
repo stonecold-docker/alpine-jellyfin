@@ -121,9 +121,9 @@ cd /build
 git clone https://github.com/jellyfin/jellyfin.git -b ${JELLYFIN_VERSION}
 mv jellyfin jellyfin-git
 cd jellyfin-*
-if [ ! -e /app/libskia/libSkiaSharp.so ]; then
-	sed -i -e "s/Include=\"SkiaSharp.NativeAssets.Linux\"/Include=\"StoneCold.SkiaSharp.NativeAssets.AlpineLinux\"/g" Jellyfin.Drawing.Skia/Jellyfin.Drawing.Skia.csproj #Patch for alpine linux
-fi
+#if [ ! -e /app/libskia/libSkiaSharp.so ]; then
+#	sed -i -e "s/Include=\"SkiaSharp.NativeAssets.Linux\"/Include=\"StoneCold.SkiaSharp.NativeAssets.AlpineLinux\"/g" src/Jellyfin.Drawing.Skia/Jellyfin.Drawing.Skia.csproj #Patch for alpine linux
+#fi
 #dotnet publish Jellyfin.Server --configuration Release --output=/app/jellyfin --self-contained --runtime ${DOTNET_RUNTIME} "-p:GenerateDocumentationFile=false;DebugSymbols=false;DebugType=none"
 dotnet publish Jellyfin.Server --configuration Release --output=/app/jellyfin --self-contained --runtime ${DOTNET_RUNTIME} "-p:DebugSymbols=false"
 if [ -e /app/libskia/libSkiaSharp.so ]; then
@@ -144,14 +144,11 @@ cd /app/jellyfin
 git clone https://github.com/jellyfin/jellyfin-web.git -b ${JELLYFIN_WEB_VERSION}
 mv jellyfin-web jellyfin-web-git
 cd /app/jellyfin/jellyfin-web-*
-#echo Y | npx yarn install
-#npm install
-#mv dist /app/jellyfin/jellyfin-web
- ./build.sh -t native -p portable
+npm install
+npm run build:production
+mv dist /app/jellyfin/jellyfin-web
 cd /app/jellyfin
 rm -rf /app/jellyfin/jellyfin-web-*
-tar zxf bin/portable/jellyfin-web_*.tar.gz
-mv jellyfin-web_* jellyfin-web
 rm -rf bin
 chmod 755 /app/jellyfin/jellyfin
 cd /
