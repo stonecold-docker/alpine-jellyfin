@@ -9,9 +9,10 @@ echo "${RUN_USER_NAME}.${RUN_USER_GROUP}"
 
 source /etc/profile
 
-cd /app/jellyfin
-exec su-exec ${RUN_USER_NAME} /app/jellyfin/jellyfin \
+cd /conf.d/jellyfin
+exec su-exec ${RUN_USER_NAME} /usr/bin/jellyfin \
 	--datadir /conf.d/jellyfin \
 	--cachedir /cache \
+	--webdir /usr/share/webapps/jellyfin-web \
 	--ffmpeg /usr/bin/ffmpeg
 

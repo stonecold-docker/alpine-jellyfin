@@ -1,3 +1,0 @@
-[submodule "builder-libskiasharp"]
-	path = builder-libskiasharp
-	url = git@bitbucket.org:docker_alpine/alpine-jellyfin-builder-libskiasharp.git
