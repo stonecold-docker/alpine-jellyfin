@@ -3,7 +3,7 @@
 set -e
 
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Installing required packages"
-PKG_LIB="jellyfin jellyfin-web"
+PKG_LIB="jellyfin jellyfin-web ffmpeg"
 PKG_DEV=""
 case "$(uname -m)" in
 	x86_64)
