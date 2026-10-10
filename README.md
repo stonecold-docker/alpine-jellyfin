@@ -5,8 +5,10 @@
 
 
 ----------------------------------------
-### x64
-![Docker Image Size](https://img.shields.io/docker/image-size/forumi0721/alpine-jellyfin/x64)
+### amd64
+![Docker Image Size (tag)](https://img.shields.io/docker/image-size/forumi0721/alpine-jellyfin/latest?arch=amd64)
+### arm64
+![Docker Image Size (tag)](https://img.shields.io/docker/image-size/forumi0721/alpine-jellyfin/latest?arch=arm64)
 
 
 
@@ -14,8 +16,8 @@
 #### Description
 
 * Distribution : [Alpine Linux](https://alpinelinux.org/)
-* Architecture : x64
-* Appplication : [Jellyfin](https://jellyfin.github.io/)
+* Architecture : amd64, arm64
+* Application : [Jellyfin](https://jellyfin.github.io/)
     - Jellyfin is a Free Software Media System that puts you in control of managing and streaming your media.
 
 
@@ -29,7 +31,7 @@ docker run -d \
 		   -p 8920:8920/udp \
 		   -v /comf.d:/conf.d \
 		   -v /data:/data \
-		   forumi0721/alpine-jellyfin:[ARCH_TAG]
+		   forumi0721/alpine-jellyfin:latest
 ```
 
 

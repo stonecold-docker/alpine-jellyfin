@@ -1,10 +1,10 @@
 Dockerfile
 Dockerfile.*
 README.md
+docker-*
+multiarch-manifest.yaml
+hooks
 .dockerignore
 .git
 .gitignore
-builddep
-builddep-ffmpeg
-builddep-gn
-builddep-skiasharp
+.github
