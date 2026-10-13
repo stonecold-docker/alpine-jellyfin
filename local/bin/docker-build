@@ -3,11 +3,11 @@
 set -e
 
 echo "[$(TZ="GMT-9" date '+%Y-%m-%d %H:%M:%S')] ==> Installing required packages"
-PKG_LIB="jellyfin jellyfin-web ffmpeg"
+PKG_LIB="jellyfin jellyfin-web libva libva-utils"
 PKG_DEV=""
 case "$(uname -m)" in
 	x86_64)
-		PKG_LIB="${PKG_LIB} libva libva-intel-driver intel-media-driver"
+		PKG_LIB="${PKG_LIB} intel-media-driver onevpl-intel-gpu"
 		;;
 esac
 docker-install -r -u su-exec ${PKG_LIB} ${PKG_DEV}

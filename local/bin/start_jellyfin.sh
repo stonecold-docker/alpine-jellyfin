@@ -14,5 +14,5 @@ exec su-exec ${RUN_USER_NAME} /usr/bin/jellyfin \
 	--datadir /conf.d/jellyfin \
 	--cachedir /cache \
 	--webdir /usr/share/webapps/jellyfin-web \
-	--ffmpeg /usr/bin/ffmpeg
+	--ffmpeg /usr/lib/jellyfin-ffmpeg/ffmpeg
 
